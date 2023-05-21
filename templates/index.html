@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--开始-->
+    <meta charset="utf-8" />
+    <!--设置编码方式-->
+    <title>Welcome to T20-Forum</title>
+    <!--网页名称-->
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<!--结束-->
+
+<body>
+    <!--显示内容-->
+    <div class="container">
+        <header>
+            <div>
+                <h1>T20-Forum</h1>
+            </div>
+        </header>
+        <main>
+            <p>这里是属于中国人的论坛</p>
+            <p>This is a forum for Chinese</p>
+            <p>此论坛只接收20及以下的铺面</p>
+            <p>This forum only accepts scores of 20 and below</p>
+            <div>
+                <h2>
+                    <a href="https://www.wjx.top/vm/eYmaTv2.aspx" target="_blank">
+                        上传谱面 Upload
+                    </a>
+                    <br />
+                    <a href="{{ url_for('list') }}" target="_blank">
+                        查看铺面 Levels
+                    </a>
+                </h2>
+            </div>
+        </main>
+
+    </div>
+    <div style="position: absolute;bottom: 0;right: 0;">
+        <a href="{{ url_for('admin') }}">
+            管理
+        </a>
+    </div>
+</body>
+
+</html>

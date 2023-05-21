@@ -1,0 +1,25 @@
+<head>
+    <title>铺面列表 Levels</title>
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<h1>铺面列表 Levels</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>名称 Name</th>
+                <th>难度 Difficult</th>
+                <th>视频 Video</th>
+                <th>下载链接 DownloadURL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td><a href="{{ item[2] }}">点击观看 Watch</a></td>
+                <td><a href="{{ item[3] }}">点击下载 Download</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

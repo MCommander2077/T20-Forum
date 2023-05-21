@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+    <h1>Admin Page:</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.name.label }} {{ form.name }}<br>
+        {{ form.difficult.label }} {{ form.difficult }}<br>
+        {{ form.video.label }} {{ form.video }}<br>
+        {{ form.downloadURL.label }} {{ form.downloadURL }}<br>
+        {{ form.submit }}
+    </form>
+</body>
+</html>
