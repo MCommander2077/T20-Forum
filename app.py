@@ -1,4 +1,5 @@
 import os
+import platform
 
 from flask import (Flask, Response, make_response, redirect, render_template,
                     request, url_for)
@@ -9,11 +10,6 @@ password = 'T20-Forum_P^S5VV0rD'
 
 app = Flask(__name__,static_folder='static')
 app.secret_key = os.getenv('SECRET_KEY', 'secret_key')
-
-
-def getMD5(data):
-    return hashlib.md5(data.encode(encoding='UTF-8')).hexdigest()
-
 
 class MyForm(FlaskForm):
     name = StringField('Name:')
@@ -29,12 +25,26 @@ def index():
     return render_template('index.html')
 
 @app.route('/levels')
-def list():
+def levels():
     data = []
+    # 默认显示第一页
+    page = 1
+    # 检查请求参数中的 page 值
+    if 'page' in request.args:
+        page = int(request.args['page'])
+        if page <= 1:
+            page = 1
+            pagelist = [1, 1, 2]
+        else:
+            pagelist = [(page - 1), page, (page + 1)]
+    else:
+        page = 1
+        pagelist = [1, 1, 2]
+
     with open('data.txt', 'r') as f:
         for line in f:
             data.append(line.strip().split('|*|'))
-    return render_template('list.html', data=data)
+    return render_template('list.html', data=data[((page-1)*10):(page*10)] ,pagelist=pagelist)
 
 @app.route('/admin-login')
 def login_static():
@@ -103,7 +113,7 @@ myFunction()
 
 @app.errorhandler(404)  # 传入要处理的错误代码
 def page_not_found(e):  # 接受异常对象作为参数
-    return render_template('404.html'), 404  # 返回模板和状态码
+    return render_template('404.html',error=e), 404  # 返回模板和状态码
 
 if __name__ == '__main__':
     #app.run(debug=True)
