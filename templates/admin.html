@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
-    <link rel="stylesheet" href="static/css/index.css">
+    <link href="static/css/index.css" rel="stylesheet">
 </head>
 <body>
-<nav>
-  <ul>
-      <li>T20-F</li>
-    <li><a href="../">Home</a></li>
-  </ul>
-</nav>
+
+<div class="container">
     <h1>Admin Page:</h1>
     <form method="POST">
         {{ form.csrf_token }}
@@ -22,4 +18,5 @@
         {{ form.submit }}
     </form>
 </body>
+</div>
 </html>

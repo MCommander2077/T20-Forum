@@ -1,36 +1,36 @@
 <head>
     <title>铺面列表 Levels</title>
-    <link rel="stylesheet" href="static/css/index.css">
+    <link href="static/css/index.css" rel="stylesheet">
 </head>
 <body>
-<nav>
-  <ul>
-      <li>T20-F</li>
-    <li><a href="../">Home</a></li>
-  </ul>
-</nav>
+
 <div class="container">
-<h1>铺面列表 Levels</h1>
+    <h1>铺面列表 Levels</h1>
     <table border="1">
         <thead>
-            <tr>
-                <th>名称 Name</th>
-                <th>难度 Difficult</th>
-                <th>视频 Video</th>
-                <th>下载链接 DownloadURL</th>
-            </tr>
+        <tr>
+            <th>名称 Name</th>
+            <th>难度 Difficult</th>
+            <th>视频 Video</th>
+            <th>下载链接 DownloadURL</th>
+        </tr>
         </thead>
         <tbody>
-            {% for item in data %}
-            <tr>
-                <td>{{ item[0] }}</td>
-                <td>{{ item[1] }}</td>
-                <td><a href="{{ item[2] }}" target="_blank">点击观看 Watch</a></td>
-                <td><a href="{{ item[3] }}" target="_blank">点击下载 Download</a></td>
-            </tr>
-            {% endfor %}
+        {% for item in data %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td><a href="{{ item[2] }}" target="_blank">点击观看 Watch</a></td>
+            <td><a href="{{ item[3] }}" target="_blank">点击下载 Download</a></td>
+        </tr>
+        {% endfor %}
         </tbody>
 
     </table>
-    <h2>当前页面：第{{pagelist[1]}}页 <a href="../levels?page={{pagelist[0]}}"><button>上一页</button></a> <a href="../levels?page={{pagelist[2]}}"><button>下一页</button></a></h2>
-    </div></body>
+    <h2>当前页面：第{{pagelist[1]}}页 <a href="../levels?page={{pagelist[0]}}">
+        <button>上一页</button>
+    </a> <a href="../levels?page={{pagelist[2]}}">
+        <button>下一页</button>
+    </a></h2>
+</div>
+</body>
