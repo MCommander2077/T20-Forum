@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import platform
 
@@ -54,7 +55,7 @@ def levels():
         page = 1
         pagelist = [1, 1, 2]
 
-    with open('data.txt', 'r') as f:
+    with open('data.txt', 'r', encoding='GBK') as f:
         for line in f:
             data.append(line.strip().split('|*|'))
     return render_template('list.html', data=data[((page - 1) * 10):(page * 10)], pagelist=pagelist,
@@ -136,5 +137,5 @@ def page_not_found(e):  # 接受异常对象作为参数
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='127.0.0.1', port=9809)
-    # app.run(host='127.0.0.1', port=9809)
+    # app.run(debug=True,host='127.0.0.1', port=9809)
+    app.run(host='127.0.0.1', port=9809)
