@@ -1,5 +1,5 @@
 <head>
-    <title>铺面列表 Levels</title>
+    <title>铺面列表/Levels</title>
     <link href="static/css/index.css" rel="stylesheet">
 </head>
 <body>
@@ -9,10 +9,11 @@
     <table border="1">
         <thead>
         <tr>
-            <th>名称 Name</th>
-            <th>难度 Difficult</th>
-            <th>视频 Video</th>
-            <th>下载链接 DownloadURL</th>
+            <th>曲师+歌曲/Artist+Song:</th>
+            <th>难度/Difficult:</th>
+            <th>视频/Vidio:</th>
+            <th>下载链接/DownloadURL:</th>
+            <th>谱师/geneticist:</th>
         </tr>
         </thead>
         <tbody>
@@ -20,8 +21,9 @@
         <tr>
             <td>{{ item[0] }}</td>
             <td>{{ item[1] }}</td>
-            <td><a href="{{ item[2] }}" target="_blank">点击观看 Watch</a></td>
-            <td><a href="{{ item[3] }}" target="_blank">点击下载 Download</a></td>
+            <td><a href="{{ item[2] }}" target="_blank">点击观看/Watch</a></td>
+            <td><a href="{{ item[3] }}" target="_blank">点击下载/Download</a></td>
+            <td>{{ item[4] }}</td>
         </tr>
         {% endfor %}
         </tbody>

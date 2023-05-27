@@ -6,8 +6,6 @@ from flask import (Flask, Response, make_response, redirect, render_template,
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 
-
-
 password = 'T20-Forum_P^S5VV0rD'
 
 app = Flask(__name__, static_folder='static')
@@ -15,25 +13,28 @@ app.secret_key = os.getenv('SECRET_KEY', 'secret_key')
 
 
 class MyForm(FlaskForm):
-    name = StringField('Name:')
-    difficult = StringField('Difficult:')
-    video = StringField('video:')
-    downloadURL = StringField('downloadURL:')
-    submit = SubmitField('Submit')
+    name = StringField('曲师+歌曲/Artist+Song:')
+    geneticist = StringField('谱师/Geneticist:')
+    difficult = StringField('难度/Difficult:')
+    video = StringField('视频/Vidio:')
+    downloadURL = StringField('下载链接/DownloadURL:')
+    submit = SubmitField('提交/Submit')
 
-'''
+''''
 # 装饰器在 HTTP 响应之前添加顶部导航栏
-@app.after_request
-def add_topnav(response):
-    Response.direct_passthrough = False
+@app.before_request
+def add_top(response):
+    # 读取 topnav.html 模板的内容
+    with app.open_resource('templates/topnav.html') as f:
+        topnav_html = f.read().decode('utf-8')
     # 在 HTML 响应内容的前面添加 topnav.html 的内容
-    response.data = render_template('topnav.html') + response.data.decode('utf-8')
+    response.data = topnav_html + response.data.decode('utf-8')
     return response
 '''
 
 @app.route('/')
 def index():
-    return render_template('index.html', topnav=render_template('topnav.html'))
+    return render_template('index.html')
 
 
 @app.route('/levels')
@@ -79,6 +80,10 @@ def login_post():
         return render_template('login.html', error='密码错误', topnav=render_template('topnav.html'))
 
 
+@app.route('/urlexpired')
+def expire():
+    return render_template('expire.html')
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     pwd_cookie = request.cookies.get('password')  # 获取密码cookie
@@ -109,9 +114,9 @@ myFunction()
 '''  # 否则重定向至登录页面
 
     if form.validate_on_submit():
-        if not form.name.data == '' and not form.difficult.data == '' and not form.video.data == '' and not form.downloadURL.data == '' and not form.downloadURL.data == '':
+        if not form.name.data == '' and not form.difficult.data == '' and not form.video.data == '' and not form.downloadURL.data == '' and not form.downloadURL.data == '' and not form.geneticist.data == '':
             with open('data.txt', 'a') as f:
-                f.write(f'{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}\n')
+                f.write(f'{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}|*|{form.geneticist.data}\n')
             return redirect(url_for('index'))
         else:
             return '''
@@ -122,14 +127,14 @@ myFunction()
 </script>
 <meta http-equiv="Refresh" content="0" />
 '''
-    return render_template('admin.html', form=form, topnav=render_template('topnav.html'))
+    return render_template('admin.html', form=form)
 
 
 @app.errorhandler(404)  # 传入要处理的错误代码
 def page_not_found(e):  # 接受异常对象作为参数
-    return render_template('404.html', error=e, topnav=render_template('topnav.html')), 404  # 返回模板和状态码
+    return render_template('404.html', error=e), 404  # 返回模板和状态码
 
 
 if __name__ == '__main__':
-     app.run(debug=True,host='127.0.0.1', port=9809)
+    app.run(debug=True,host='127.0.0.1', port=9809)
     # app.run(host='127.0.0.1', port=9809)

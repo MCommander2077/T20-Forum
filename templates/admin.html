@@ -2,19 +2,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>管理员/Admin</title>
     <link href="static/css/index.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-    <h1>Admin Page:</h1>
+    <h1>管理员页面/Admin Page:</h1>
     <form method="POST">
         {{ form.csrf_token }}
         {{ form.name.label }} {{ form.name }}<br>
         {{ form.difficult.label }} {{ form.difficult }}<br>
         {{ form.video.label }} {{ form.video }}<br>
         {{ form.downloadURL.label }} {{ form.downloadURL }}<br>
+        {{ form.geneticist.label }} {{ form.geneticist }}<br>
         {{ form.submit }}
     </form>
 </body>
