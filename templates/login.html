@@ -1,18 +1,44 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
-
+    <link href="static/css/index.css" rel="stylesheet">
 </head>
-<body>
 
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
-<form method="POST">
-    <input name="password" placeholder="Password" type="password">
-    <input type="submit" value="Login">
-</form>
+<body>
+    {% if error %}
+    <script type="text/javascript">
+        alert("{{ error }}")
+    </script>
+    {% endif %}
+    <div class="container">
+        <div id="loading_box">
+            <div class="text">
+                <p>加载中...</p>
+            </div>
+            <div class="box">
+                <div class="loading">
+                </div>
+            </div>
+        </div>
+        <form id="f_form" method="POST">
+            <input name="password" placeholder="Password" type="password">
+            <input id="btn" type="submit" value="Login">
+        </form>
+    </div>
+    <script type="text/javascript">
+        var t1 = document.getElementById('loading_box');
+        var t2 = document.getElementById('f_form')
+        t1.style.visibility = 'hidden';	// 隐藏元素
+        t2.style.visibility = 'visible';	// 显示元素
+
+        var btn = document.getElementById("btn");
+        btn.onclick = function () {
+            t1.style.visibility = 'visible';	// 显示元素
+            t2.style.visibility = 'hidden';	// 隐藏元素
+        }
+    </script>
 </body>
+
 </html>

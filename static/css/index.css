@@ -131,3 +131,39 @@ nav li a {
 nav li a:hover {
   background-color: #111;
 }
+
+.box {
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height:20px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    position: relative;
+}
+
+.loading::before{
+    content:"";
+    position: absolute;
+    top:0;
+    left:0;
+    width: 0%;
+    height:100%;
+    background: #0071e2;
+    border-radius: 5px;
+    animation: move-ani 2s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+@keyframes move-ani {
+    50% {
+        width: 100%;
+    }
+    100%{
+        width:0;
+        left:unset;
+        right:0;
+    }
+}
+    
+

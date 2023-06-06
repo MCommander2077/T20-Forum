@@ -1,4 +1,5 @@
 import os
+import time
 import platform
 
 from flask import (Flask, Response, make_response, redirect, render_template,
@@ -21,19 +22,10 @@ class MyForm(FlaskForm):
     downloadURL = StringField('downloadURL:')
     submit = SubmitField('Submit')
 
-'''
-# 装饰器在 HTTP 响应之前添加顶部导航栏
-@app.after_request
-def add_topnav(response):
-    Response.direct_passthrough = False
-    # 在 HTML 响应内容的前面添加 topnav.html 的内容
-    response.data = render_template('topnav.html') + response.data.decode('utf-8')
-    return response
-'''
 
 @app.route('/')
 def index():
-    return render_template('index.html', topnav=render_template('topnav.html'))
+    return render_template('index.html')
 
 
 @app.route('/levels')
@@ -56,8 +48,7 @@ def levels():
     with open('data.txt', 'r') as f:
         for line in f:
             data.append(line.strip().split('|*|'))
-    return render_template('list.html', data=data[((page - 1) * 10):(page * 10)], pagelist=pagelist,
-                           topnav=render_template('topnav.html'))
+    return render_template('list.html', data=data[((page - 1) * 10):(page * 10)], pagelist=pagelist)
 
 
 @app.route('/admin-login')
@@ -70,13 +61,13 @@ def login_post():
     global password  # 声明全局变量'
     form = MyForm()
     pwd = request.form['password']  # 获取用户提交的密码
-
+    time.sleep(2)
     if pwd == password:  # 判断密码是否正确
         resp = make_response('<meta http-equiv="Refresh" content="0;url=../admin" />')  # 使用表单渲染模板
         resp.set_cookie('password', pwd)  # 将密码存储在cookie中
         return resp
     else:
-        return render_template('login.html', error='密码错误', topnav=render_template('topnav.html'))
+        return render_template('login.html', error='密码错误')
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -122,14 +113,14 @@ myFunction()
 </script>
 <meta http-equiv="Refresh" content="0" />
 '''
-    return render_template('admin.html', form=form, topnav=render_template('topnav.html'))
+    return render_template('admin.html', form=form)
 
 
 @app.errorhandler(404)  # 传入要处理的错误代码
 def page_not_found(e):  # 接受异常对象作为参数
-    return render_template('404.html', error=e, topnav=render_template('topnav.html')), 404  # 返回模板和状态码
+    return render_template('404.html', error=e), 404  # 返回模板和状态码
 
 
 if __name__ == '__main__':
-     app.run(debug=True,host='127.0.0.1', port=9809)
-    # app.run(host='127.0.0.1', port=9809)
+    # app.run(debug=True,host='127.0.0.1', port=9809)
+    app.run(host='127.0.0.1', port=9808)
