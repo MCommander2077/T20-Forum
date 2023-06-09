@@ -1,5 +1,4 @@
 import os
-import time
 import platform
 
 from flask import (Flask, Response, make_response, redirect, render_template,
@@ -61,13 +60,13 @@ def login_post():
     global password  # 声明全局变量'
     form = MyForm()
     pwd = request.form['password']  # 获取用户提交的密码
-    time.sleep(2)
+
     if pwd == password:  # 判断密码是否正确
         resp = make_response('<meta http-equiv="Refresh" content="0;url=../admin" />')  # 使用表单渲染模板
         resp.set_cookie('password', pwd)  # 将密码存储在cookie中
         return resp
     else:
-        return render_template('login.html', error='密码错误')
+        return render_template('login.html', error='密码错误', topnav=render_template('topnav.html'))
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -113,14 +112,14 @@ myFunction()
 </script>
 <meta http-equiv="Refresh" content="0" />
 '''
-    return render_template('admin.html', form=form)
+    return render_template('admin.html', form=form, topnav=render_template('topnav.html'))
 
 
 @app.errorhandler(404)  # 传入要处理的错误代码
 def page_not_found(e):  # 接受异常对象作为参数
-    return render_template('404.html', error=e), 404  # 返回模板和状态码
+    return render_template('404.html', error=e, topnav=render_template('topnav.html')), 404  # 返回模板和状态码
 
 
 if __name__ == '__main__':
-    # app.run(debug=True,host='127.0.0.1', port=9809)
-    app.run(host='127.0.0.1', port=9808)
+     app.run(debug=True,host='127.0.0.1', port=9809)
+    # app.run(host='127.0.0.1', port=9809)
