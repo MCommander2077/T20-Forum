@@ -7,6 +7,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 
 import config
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+import threading
 
 password = config.SECRET_KEY
 
@@ -15,12 +19,46 @@ app.secret_key = os.getenv('SECRET_KEY', 'secret_key')
 
 app.config['SECRET_KEY'] = (os.urandom(24))
 
+# 配置数据库连接
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql:///root:root@localhost/flask'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# 绑定Flask对象
+db = SQLAlchemy(app)
+
+
+class DataBaseAction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    song_id = db.Column(db.Integer)
+    artist_song = db.Column(db.Text)
+    geneticist = db.Column(db.Text)
+    difficult = db.Column(db.Text)
+    video = db.Column(db.Text)
+    download_url = db.Column(db.Text)
+
+    '''
+    def __init__(self, artist_song=None, geneticist=None, difficult=None, video=None, download_url=None, song_id=None):
+        self.artist_song = artist_song
+        self.geneticist = geneticist
+        self.difficult = difficult
+        self.video = video
+        self.download_url = download_url
+        self.song_id = song_id
+    '''
+
+    def __init__(self):
+        pass
+    def __repr__(self):
+        return f'''{self.artist_song}|*|{self.geneticist}|*|{self.difficult}|*|{self.video}|*|{self.download_url}|*|{self.song_id}'''
+
+
+
 class MyForm(FlaskForm):
-    name = StringField('Name:')
-    difficult = StringField('Difficult:')
-    video = StringField('video:')
-    downloadURL = StringField('downloadURL:')
-    submit = SubmitField('Submit')
+    name = StringField('曲师+歌曲/Artist+Song:')
+    geneticist = StringField('谱师/Geneticist:')
+    difficult = StringField('难度/Difficult:')
+    video = StringField('视频/Vidio:')
+    downloadURL = StringField('下载链接/DownloadURL:')
+    submit = SubmitField('提交/Submit')
 
 
 @app.route('/')
@@ -45,9 +83,11 @@ def levels():
         page = 1
         pagelist = [1, 1, 2]
 
-    with open('data.txt', 'r', encoding="GBK") as f:
-        for line in f:
-            data.append(line.strip().split('|*|'))
+    try:
+        data = DataBaseAction.query.all()
+    except Exception as error:
+        print(error)
+        return render_template('404.html', error=error), 404  # 返回模板和状态码
     return render_template('list.html', data=data[((page - 1) * 10):(page * 10)], pagelist=pagelist)
 
 
@@ -100,9 +140,12 @@ myFunction()
 '''  # 否则重定向至登录页面
 
     if form.validate_on_submit():
-        if not form.name.data == '' and not form.difficult.data == '' and not form.video.data == '' and not form.downloadURL.data == '' and not form.downloadURL.data == '':
-            with open('data.txt', 'a', encoding="GBK") as f:
-                f.write(f'{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}\n')
+        if  form.name.data and  form.difficult.data and  form.video.data and  form.downloadURL.data and  form.downloadURL.data and  form.geneticist.data == '':
+            #创建新的数据行
+            new_data = DataBaseAction(f'{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}|*|{form.geneticist.data}')
+            # 添加到数据库
+            db.session.add(new_data)
+            db.session.commit()
             return redirect(url_for('index'))
         else:
             return '''
@@ -120,7 +163,17 @@ myFunction()
 def page_not_found(e):  # 接受异常对象作为参数
     return render_template('404.html', error=e), 404  # 返回模板和状态码
 
+def get_last_data():
+    # 查询最后一条数据行
+    data = DataBaseAction().query.order_by(DataBaseAction().order.desc()).limit(10)
+    if data:
+        print(data)
+        # 返回主数据和序号
+        return data
+    else:
+        return None
 
 if __name__ == '__main__':
-     app.run(debug=True,host='127.0.0.1', port=9808)
+    print(get_last_data())
+    app.run(debug=True, host='127.0.0.1', port=9808)
     # app.run(host='127.0.0.1', port=9809)
