@@ -42,14 +42,11 @@ class DatasTable(db.Model):
 
 def db_get_data(id):
     data = DatasTable().query.filter_by(id=id).all()[0]
-    print(data)
     return str(data)
 
 
 def db_get_all_data():
     users = DatasTable().query.all()
-    print(type(users))
-    print(users[0])
     data=[]
     for i in range(len(users)):
         data.append(str(users[i]))
@@ -58,7 +55,6 @@ def db_get_all_data():
 
 with app.app_context():
     db.create_all()
-    print(db_get_all_data())
 
 
 class MyForm(FlaskForm):
@@ -93,15 +89,12 @@ def levels():
 
     try:
         idata = db_get_all_data()
-        print(type(idata))
         if not idata:
             error = "No Data Has Found"
             return render_template('404.html', error=error), 404  # 返回模板和状态码
         final_data = []
         for i in range(len(idata)):
             final_data.append(idata[i].strip().split('|*|'))
-            print(idata[i].strip().split('|*|'))
-            print(data)
 
     except Exception as error:
         return render_template('404.html', error=error), 404  # 返回模板和状态码
@@ -130,7 +123,6 @@ def login_post():
 @app.route('/song/<int:song_id>')
 def get_song(song_id):
     result = str(db_get_data(song_id))
-    print(result)
     if result:
         return render_template('songinfo.html', item=result.strip().split('|*|'))
     else:
@@ -140,7 +132,6 @@ def get_song(song_id):
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     pwd_cookie = session.get('password')  # 获取密码cookie
-    print(pwd_cookie)
     pwd = pwd_cookie if pwd_cookie else ''  # 如果cookie不存在，初始化密码为空
 
     form = MyForm()
