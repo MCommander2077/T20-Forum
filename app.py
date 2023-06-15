@@ -1,17 +1,23 @@
 import os
+import ast
 import platform
 
 from flask import (Flask, Response, make_response, redirect, render_template,
-                   request, url_for, session)
+                   request, url_for, session, jsonify)
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 
 import config
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 
 import threading
 
+# f'''{self.artist_song}|*|{self.geneticist}|*|{self.difficult}|*|{self.video}|*|{self.download_url}|*|{self.song_id}'''
+
+# 定义全局变量
+data = ''
 password = config.SECRET_KEY
 
 app = Flask(__name__, static_folder='static')
@@ -20,36 +26,39 @@ app.secret_key = os.getenv('SECRET_KEY', 'secret_key')
 app.config['SECRET_KEY'] = (os.urandom(24))
 
 # 配置数据库连接
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql:///root:root@localhost/flask'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_CONFIG
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # 绑定Flask对象
 db = SQLAlchemy(app)
 
 
-class DataBaseAction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    song_id = db.Column(db.Integer)
-    artist_song = db.Column(db.Text)
-    geneticist = db.Column(db.Text)
-    difficult = db.Column(db.Text)
-    video = db.Column(db.Text)
-    download_url = db.Column(db.Text)
+class DatasTable(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    data = db.Column(db.String(512))
 
-    '''
-    def __init__(self, artist_song=None, geneticist=None, difficult=None, video=None, download_url=None, song_id=None):
-        self.artist_song = artist_song
-        self.geneticist = geneticist
-        self.difficult = difficult
-        self.video = video
-        self.download_url = download_url
-        self.song_id = song_id
-    '''
-
-    def __init__(self):
-        pass
     def __repr__(self):
-        return f'''{self.artist_song}|*|{self.geneticist}|*|{self.difficult}|*|{self.video}|*|{self.download_url}|*|{self.song_id}'''
+        return f'{self.data}|*|{self.id}'
 
+
+def db_get_data(id):
+    data = DatasTable().query.filter_by(id=id).all()
+    print(data)
+    return str(data)
+
+
+def db_get_all_data():
+    users = DatasTable().query.all()
+    print(type(users))
+    print(users[0])
+    data=[]
+    for i in range(len(users)):
+        data.append(str(users[i]))
+    return data
+
+
+with app.app_context():
+    db.create_all()
+    print(db_get_all_data())
 
 
 class MyForm(FlaskForm):
@@ -68,7 +77,6 @@ def index():
 
 @app.route('/levels')
 def levels():
-    data = []
     # 默认显示第一页
     page = 1
     # 检查请求参数中的 page 值
@@ -84,11 +92,19 @@ def levels():
         pagelist = [1, 1, 2]
 
     try:
-        data = DataBaseAction.query.all()
+        idata = db_get_all_data()
+        print(type(idata))
+        if not idata:
+            error = "No Data Has Found"
+            return render_template('404.html', error=error), 404  # 返回模板和状态码
+        final_data = []
+        for i in range(len(idata)):
+            final_data.append(idata[i].strip().split('|*|'))
+            print(data)
+
     except Exception as error:
-        print(error)
         return render_template('404.html', error=error), 404  # 返回模板和状态码
-    return render_template('list.html', data=data[((page - 1) * 10):(page * 10)], pagelist=pagelist)
+    return render_template('list.html', data=final_data[((page - 1) * 10):(page * 10)], pagelist=pagelist)
 
 
 @app.route('/admin-login')
@@ -108,6 +124,15 @@ def login_post():
         return resp
     else:
         return render_template('login.html', error='密码错误')
+
+
+@app.route('/song/<int:song_id>')
+def get_song(song_id):
+    result = db_get_data(song_id)
+    if result:
+        return render_template('songinfo.html', item=result)
+    else:
+        return render_template('404.html', error='Song Not Found'), 404  # 返回模板和状态码
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -140,9 +165,11 @@ myFunction()
 '''  # 否则重定向至登录页面
 
     if form.validate_on_submit():
-        if  form.name.data and  form.difficult.data and  form.video.data and  form.downloadURL.data and  form.downloadURL.data and  form.geneticist.data == '':
-            #创建新的数据行
-            new_data = DataBaseAction(f'{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}|*|{form.geneticist.data}')
+        if form.name.data and form.difficult.data and form.video.data and form.downloadURL.data and form.geneticist.data:
+            # 创建新的数据行
+            new_data = DatasTable(
+                data=f"{form.name.data}|*|{form.difficult.data}|*|{form.video.data}|*|{form.downloadURL.data}|*|{form.geneticist.data}"
+            )
             # 添加到数据库
             db.session.add(new_data)
             db.session.commit()
@@ -163,17 +190,7 @@ myFunction()
 def page_not_found(e):  # 接受异常对象作为参数
     return render_template('404.html', error=e), 404  # 返回模板和状态码
 
-def get_last_data():
-    # 查询最后一条数据行
-    data = DataBaseAction().query.order_by(DataBaseAction().order.desc()).limit(10)
-    if data:
-        print(data)
-        # 返回主数据和序号
-        return data
-    else:
-        return None
 
 if __name__ == '__main__':
-    print(get_last_data())
-    app.run(debug=True, host='127.0.0.1', port=9808)
+    app.run(debug=True, host='127.0.0.1', port=9807)
     # app.run(host='127.0.0.1', port=9809)

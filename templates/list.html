@@ -12,21 +12,20 @@
             <th>曲师+歌曲/Artist+Song:</th>
             <th>难度/Difficult:</th>
             <th>谱师/geneticist:</th>
-            <th>视频/Vidio:</th>
-            <th>下载链接/DownloadURL:</th>
 
         </tr>
         </thead>
         <tbody>
         {% for item in data %}
-        <a href="../songinfo?id={{ item[6] }}">
         <tr>
+        <a href="../songinfo?id={{ item[6] }}">
+
             <td>{{ item[0] }}</td>
             <td>{{ item[1] }}</td>
             <td>{{ item[4] }}</td>
-
+</a>
         </tr>
-        </a>
+
         {% endfor %}
         </tbody>
 
