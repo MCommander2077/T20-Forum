@@ -5,25 +5,25 @@
 <body>
 
 <div class="container">
-    <h1>铺面列表 Levels</h1>
+    <h2>铺面列表 Levels</h2>
     <table border="1">
         <thead>
         <tr>
             <th>曲师+歌曲/Artist+Song:</th>
             <th>难度/Difficult:</th>
             <th>谱师/geneticist:</th>
-
+            <th>详情页</th>
         </tr>
         </thead>
         <tbody>
         {% for item in data %}
         <tr>
-        <a href="../songinfo?id={{ item[6] }}">
+
 
             <td>{{ item[0] }}</td>
             <td>{{ item[1] }}</td>
             <td>{{ item[4] }}</td>
-</a>
+            <td><a href="../song/{{ item[5] }}"><p>详情</p></a></td>
         </tr>
 
         {% endfor %}

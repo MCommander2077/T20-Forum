@@ -41,7 +41,7 @@ class DatasTable(db.Model):
 
 
 def db_get_data(id):
-    data = DatasTable().query.filter_by(id=id).all()
+    data = DatasTable().query.filter_by(id=id).all()[0]
     print(data)
     return str(data)
 
@@ -100,6 +100,7 @@ def levels():
         final_data = []
         for i in range(len(idata)):
             final_data.append(idata[i].strip().split('|*|'))
+            print(idata[i].strip().split('|*|'))
             print(data)
 
     except Exception as error:
@@ -128,9 +129,10 @@ def login_post():
 
 @app.route('/song/<int:song_id>')
 def get_song(song_id):
-    result = db_get_data(song_id)
+    result = str(db_get_data(song_id))
+    print(result)
     if result:
-        return render_template('songinfo.html', item=result)
+        return render_template('songinfo.html', item=result.strip().split('|*|'))
     else:
         return render_template('404.html', error='Song Not Found'), 404  # 返回模板和状态码
 
@@ -192,5 +194,5 @@ def page_not_found(e):  # 接受异常对象作为参数
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=9807)
-    # app.run(host='127.0.0.1', port=9809)
+    #app.run(debug=True, host='127.0.0.1', port=9807)
+    app.run(host='127.0.0.1', port=9800)
