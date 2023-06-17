@@ -41,7 +41,10 @@ class DatasTable(db.Model):
 
 
 def db_get_data(id):
-    data = DatasTable().query.filter_by(id=id).all()[0]
+    try:
+        data = DatasTable().query.filter_by(id=id).all()[0]
+    except Exception as error:
+        return False
     return str(data)
 
 
@@ -122,11 +125,14 @@ def login_post():
 
 @app.route('/song/<int:song_id>')
 def get_song(song_id):
-    result = str(db_get_data(song_id))
-    if result:
+    result = db_get_data(song_id)
+    if not result:
+        pass
+    elif str(result):
         return render_template('songinfo.html', item=result.strip().split('|*|'))
     else:
-        return render_template('404.html', error='Song Not Found'), 404  # 返回模板和状态码
+        pass
+    return render_template('404.html', error='Song Not Found'), 404  # 返回模板和状态码
 
 
 @app.route('/admin', methods=['GET', 'POST'])
