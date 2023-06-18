@@ -8,16 +8,6 @@ body {
     padding: 0;
 }
 
-/* 设置按钮样式 */
-button {
-    background-color: #0077C8;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 .container {
     max-width: 960px;
     margin: 0 auto;
