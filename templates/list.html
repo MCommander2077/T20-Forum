@@ -1,39 +1,48 @@
 <head>
     <title>铺面列表/Levels</title>
-    <link href="static/css/index.css" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-all.min.css">
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro.min.css">
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-colors.min.css">
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-icons.min.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2>铺面列表 Levels</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>曲师+歌曲/Artist+Song:</th>
-            <th>难度/Difficult:</th>
-            <th>谱师/geneticist:</th>
-            <th>详情页</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in data %}
-        <tr>
+    <div class="container">
+        <h2>铺面列表 Levels</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>曲师+歌曲/Artist+Song:</th>
+                    <th>难度/Difficult:</th>
+                    <th>谱师/geneticist:</th>
+                    <th>详情页</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
 
 
-            <td>{{ item[0] }}</td>
-            <td>{{ item[1] }}</td>
-            <td>{{ item[4] }}</td>
-            <td><a href="../song/{{ item[5] }}"><p>详情</p></a></td>
-        </tr>
+                    <td>{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[4] }}</td>
+                    <td><a href="../song/{{ item[5] }}">
+                            <p>详情</p>
+                        </a></td>
+                </tr>
 
-        {% endfor %}
-        </tbody>
+                {% endfor %}
+            </tbody>
 
-    </table>
-    <h2>当前页面：第{{pagelist[1]}}页 <a href="../levels?page={{pagelist[0]}}">
-        <button>上一页</button>
-    </a> <a href="../levels?page={{pagelist[2]}}">
-        <button>下一页</button>
-    </a></h2>
-</div>
+        </table>
+        <h2>当前页面：第{{pagelist[1]}}页 <a href="../levels?page={{pagelist[0]}}">
+                <button>上一页</button>
+            </a> <a href="../levels?page={{pagelist[2]}}">
+                <button>下一页</button>
+            </a></h2>
+    </div>
+    <script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
 </body>
