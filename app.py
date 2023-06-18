@@ -3,7 +3,7 @@ import ast
 import platform
 
 from flask import (Flask, Response, make_response, redirect, render_template,
-                   request, url_for, session, jsonify)
+                    request, url_for, session, jsonify)
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 

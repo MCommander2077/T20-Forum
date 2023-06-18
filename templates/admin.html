@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>管理员/Admin</title>
     <link href="static/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-all.min.css">
@@ -15,16 +15,34 @@
 <body>
 
     <div class="container">
-        <h1>管理员页面/Admin Page:</h1>
-        <form method="POST">
-            {{ form.csrf_token }}
-            {{ form.name.label }} {{ form.name }}<br>
-            {{ form.difficult.label }} {{ form.difficult }}<br>
-            {{ form.video.label }} {{ form.video }}<br>
-            {{ form.downloadURL.label }} {{ form.downloadURL }}<br>
-            {{ form.geneticist.label }} {{ form.geneticist }}<br>
-            {{ form.submit }}
-        </form>
+        <header>
+            <h1>管理员页面/Admin Page:</h1>
+        </header>
+        <main>
+            <form method="POST">
+                <div class="form-group">
+                    {{ form.csrf_token }}
+                </div>
+                <div class="form-group">
+                    {{ form.name.label }} {{ form.name }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form.difficult.label }} {{ form.difficult }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form.video.label }} {{ form.video }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form.downloadURL.label }} {{ form.downloadURL }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form.geneticist.label }} {{ form.geneticist }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form.submit }}
+                </div>
+            </form>
+        </main>
     </div>
     <script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
 </body>
