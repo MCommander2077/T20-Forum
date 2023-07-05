@@ -3,7 +3,7 @@
 
 <head>
     <title>铺面列表/Levels</title>
-    <link href="../static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/index.css">
     <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-all.min.css">
     <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro.min.css">
     <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-colors.min.css">
@@ -13,9 +13,9 @@
 
 <body>
 
-    <div class="container">
         <h2>铺面列表 Levels</h2>
-        <table border="1" class="table">
+        <table class="table"
+               data-role="table">
             <thead>
                 <tr>
                     <th>曲师+歌曲/Artist+Song:</th>
@@ -42,11 +42,10 @@
 
         </table>
         <h2>当前页面：第{{pagelist[1]}}页 <a href="../levels?page={{pagelist[0]}}">
-                <button>上一页</button>
+                <button class="button primary outline rounded large">上一页</button>
             </a> <a href="../levels?page={{pagelist[2]}}">
-                <button>下一页</button>
+                <button class="button primary outline rounded large">下一页</button>
             </a></h2>
-    </div>
     <script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
 </body>
 
